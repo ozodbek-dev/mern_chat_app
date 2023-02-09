@@ -40,25 +40,21 @@ const accessChat = asyncHandler(async (req, res, next) => {
     }
 })
 const getChats = asyncHandler(async (req, res, next) => {
-    try {
-        Chat.find({users: {$eq: req.user._id}})
-            .populate("users", "-password")
-            .populate("groupAdmin", "-password")
-            .populate("latestMessage")
-            .sort({updatedAt: 1})
-            .then(async results => {
-                results = await User.populate(results, {
-                    path: "latestMessage.sender", select: "name pic email"
-                })
-                res.status(200).send(results);
+    Chat.find({users: {$eq: req.user._id}})
+        .populate("users", "-password")
+        .populate("groupAdmin", "-password")
+        .populate("latestMessage")
+        .sort({updatedAt: 1})
+        .then(async results => {
+            results = await User.populate(results, {
+                path: "latestMessage.sender", select: "name pic email"
             })
-            .catch(err => {
-                res.status(400);
-                throw new Error("Error: \n " + `${err.message}`);
-            })
-    } catch (e) {
-
-    }
+            res.status(200).send(results);
+        })
+        .catch(err => {
+            res.status(400);
+            throw new Error("Error: \n " + `${err.message}`);
+        })
 })
 const createGroupChat = asyncHandler(async (req, res, next) => {
     if (!req.body.users || !req.body.name) {
@@ -149,6 +145,7 @@ const addToGr = asyncHandler(async (req, res, next) => {
         res.json(added)
     }
 })
+
 
 export {
     accessChat, getChats, createGroupChat, renameGr, removeFromGr, addToGr

@@ -80,7 +80,6 @@ const GroupChatModal = ({children}) => {
     const handleDel = (u) => {
         setSelectedUsers([...selectedUsers.filter(i => i._id.toString() !== u._id.toString())])
     }
-    console.log(chats)
 
     const handleSubmit = async () => {
         if (!groupChatName || !selectedUsers.length) {
@@ -129,7 +128,6 @@ const GroupChatModal = ({children}) => {
         }
     }
 
-    console.log(selectedUsers)
     return (<>
         <span onClick={onOpen}>{children}</span>
         <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size={"xl"}>
